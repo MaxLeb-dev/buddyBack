@@ -6,11 +6,13 @@ var options = {
     useNewUrlParser: true,
 }
 
-mongoose.connect('mongodb+srv://KevinNuttin:Bilabong08!@cluster0.mj0vad5.mongodb.net/MorningNews?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://KevinNuttin:QaFx3cBGmaY7o4CT@cluster0.mj0vad5.mongodb.net/Buddy?retryWrites=true&w=majority',
     options,
-    function(err){
-        console.log(err);
-    }
+    (err) => {
+        if(err) console.log(err) 
+        else console.log("mongdb is connected");
+       }
 )
+
 
 module.exports = mongoose

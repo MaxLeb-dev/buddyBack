@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var gameModel = require('../models/games')
 
-var newGame = []
+var game = []
 var platforms= []
 var genres =[]
 var tags =[]
@@ -20,7 +21,7 @@ router.get('/games', async function(req, res, next) {
   tags.push(library.tags[i].name)
  }
 
- newGame = {
+ game = {
   name: library.name,
   description: library.description,
   image: library.background_image,
@@ -33,9 +34,34 @@ router.get('/games', async function(req, res, next) {
   genres: genres,
   tags: tags
  }
- console.log("gamesList2", newGame);
-    res.render(library);
+ 
+
+ console.log("gamesList2", game);
+    res.render(game);
   });
+
+
+  /* POST add a newGame. */
+router.post('/addgames', async function(req, res, next) {
+console.log("coucou");
+ var newGame = new gameModel({
+    name: "jffj",
+    description: "library.description",
+    image: "library.background_image",
+    metacritic: 98,
+    rating: 98,
+    review_count: 808,
+    added: 9979,
+    platforms: [platforms],
+    developers: "kdjk",
+    genres: [genres],
+    tags: [tags]
+  })
+
+  saveGame = await newGame.save()
+ 
+  res.render("coucou");
+});
 
   module.exports = router;
 
