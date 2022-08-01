@@ -12,6 +12,7 @@ const gameSchema = mongoose.Schema({
     developers: String,
     genres: Array,
     tags: Array,
+    usersList: [{type: mongoose.Schema.Types.ObjectId, ref: 'users'}]
 })
 
 const gameModel = mongoose.model('games', gameSchema)
