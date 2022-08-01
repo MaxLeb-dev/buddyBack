@@ -30,6 +30,7 @@ router.post('/sign-up', async function(req,res,next){
       birthday : req.body.birthdayFromFront,
       picture : "",                                                             //// IMAGE PAR DéFAUT ICI
       visible :  true ,
+      
       range : { min : req.body.minFromFront, max : req.body.maxFromFront},
       discord : "",                                                             // ??????
       token : Token,
@@ -40,9 +41,9 @@ router.post('/sign-up', async function(req,res,next){
   
     var newUserSave = await newUser.save();                                     //enregistrement de l'user
   
-    res.render(result = true);
+    res.render(result = true, newUser);
   } else {
-    res.redirect(result = false)
+    res.redirect(result = false, newUser = false)
   }
   
 })
@@ -64,25 +65,121 @@ router.post('/sign-in', async function(req,res,next){
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/update/games', function(req,res,next){
+router.put('/update/games',async  function(req,res,next){
 
-  var update =   await userModel.updateOne(                           // update du user ( jeux, langues moods etc...)
-  {  email: req.body.emailFromFront},  
+
+  var gamelist = req.body.listGameFromFront
+
+  var update =   await userModel.updateOne(                           // update des jeux
+  {  token : req.body.token},  
   { 
-  games : [],
-  mood : [],
-  
-  
-  
-  
+  games : gamelist
   }
   );
 
-  res.redirect('/')
+  res.json({ result: true});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+
+router.put('/update/mood',async  function(req,res,next){
+
+
+  var mood = req.body.moodFromFront
+
+  var update =   await userModel.updateOne(                           // update des moods
+  {  token : req.body.token},  
+  { 
+  mood : mood
+  }
+  );
+
+  res.json({ result: true});
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 
+router.put('/update/langues',async  function(req,res,next){
+
+
+  var langues = req.body.langues
+
+  var update =   await userModel.updateOne(                           // update des langues
+  {  token : req.body.token},  
+  { 
+  langue : langues
+  }
+  );
+
+  res.json({ result: true});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+
+router.put('/update/picture',async  function(req,res,next){
+
+
+  var picture = ""
+
+  var update =   await userModel.updateOne(                           // update de la pp
+  {  token : req.body.token},  
+  { 
+    picture : picture
+  }
+  );
+
+  res.json({ result: true});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+
+router.put('/update/description',async  function(req,res,next){
+
+
+  var description = req.body.descriptionFromFront
+
+  var update =   await userModel.updateOne(                           // update de la description
+  {  token : req.body.token},  
+  { 
+    description : description
+  }
+  );
+
+  res.json({ result: true});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+router.put('/update/hide',async  function(req,res,next){
+
+  var searchUser = await userModel.findOne({token: req.body.token });
+  if(searchUser.visible){
+    var update =   await userModel.updateOne(                           // cache l'utilisateur
+  {  token : req.body.token},  
+  { 
+    visible : false
+  }
+  );
+  }else {
+    var update =   await userModel.updateOne(                           // montre l'utilisateur
+    {  token : req.body.token},  
+    { 
+      visible : true
+    }
+    ); 
+  }
+  res.json({ result: true});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+
+router.delete('/update/delete',async  function(req,res,next){
+
+
+  var searchUser = await userModel.findOne({token: req.body.token });
+
+  var del = searchUser.mail
+
+  await userModel.deleteOne({ del});
+
+  
+  res.json({ result: true});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
 
 
 module.exports = router;

@@ -33,7 +33,7 @@ router.get('/games', async function(req, res, next) {
   genres: genres,
   tags: tags
  }
- console.log("gamesList2", newGame);
+ 
     res.render(library);
   });
 
