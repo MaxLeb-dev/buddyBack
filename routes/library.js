@@ -43,7 +43,7 @@ router.get('/games', async function(req, res, next) {
 
   /* POST add a newGame. */
 router.post('/addgames', async function(req, res, next) {
-console.log("coucou");
+
  var newGame = new gameModel({
     name: "jffj",
     description: "library.description",
@@ -52,14 +52,16 @@ console.log("coucou");
     rating: 98,
     review_count: 808,
     added: 9979,
-    platforms: [platforms],
+    platforms: ["m"],
     developers: "kdjk",
-    genres: [genres],
-    tags: [tags]
+    genres: ["m"],
+    tags: ["m"]
   })
 
-  saveGame = await newGame.save()
- 
+
+  var saveGame = await newGame.save();   
+
+ console.log("gjjgjgjgjgj");
   res.render("coucou");
 });
 
