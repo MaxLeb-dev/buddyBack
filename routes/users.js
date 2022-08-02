@@ -12,11 +12,14 @@ var uid2 = require('uid2');                                                     
 router.post('/sign-up', async function(req,res,next){
 
 
-  var searchUser = await userModel.findOne({email: req.body.mailFromFront})       // verification des doublons par mail
-  var searchUser2 = await userModel.findOne({pseudo: req.body.pseudoFromFront }); // verification  par pseudo
+  var searchUser = await userModel.findOne({mail: req.body.mail})       // verification des doublons par mail
+  var searchUser2 = await userModel.findOne({pseudo: req.body.pseudo }); // verification  par pseudo
 
   
   if(searchUser == null & searchUser2 == null){
+
+
+  const hash = bcrypt.hashSync(req.body.password, 10);
 
     var  Token = uid2(32)
 
@@ -24,26 +27,26 @@ router.post('/sign-up', async function(req,res,next){
 
 
     var newUser = new userModel({
-      pseudo: req.body.pseudoFromFront,
-      mail: req.body.mailFromFront,
-      password: req.body.passwordFromFront,
-      birthday : req.body.birthdayFromFront,
+      pseudo: req.body.pseudo,
+      mail: req.body.mail,
+      password: hash,
+      birthday : req.body.birthday,
       picture : "",                                                             //// IMAGE PAR DéFAUT ICI
       visible :  true ,
       
-      range : { min : req.body.minFromFront, max : req.body.maxFromFront},
+      
       discord : "",                                                             // ??????
       token : Token,
       games : gamelist,                                                               // ATTENDRE LES JEUX
-      plateforme : req.body.plateformeFromFront,
-      langue : req.body.langueFromFront,
+      plateforme : [req.body.plateforme],
+      langue : [req.body.langue],
     })
   
     var newUserSave = await newUser.save();                                     //enregistrement de l'user
   
-    res.render(result = true, newUser);
+    res.json(result = true , user  = newUser);
   } else {
-    res.redirect(result = false, newUser = false)
+    res.json(result  = false)
   }
   
 })
@@ -52,20 +55,22 @@ router.post('/sign-up', async function(req,res,next){
 
 router.post('/sign-in', async function(req,res,next){
 
-    var user = await userModel.findOne({ email: req.body.emailFromFront });   // recherche du user par mail
+    var user = await userModel.findOne({mail: req.body.mail });   // recherche du user par mail
  
       if(user){
-        var password = req.body.passwordFromFront
+        var password = req.body.password
         if (bcrypt.compareSync(password, user.password)) {                    // comparaison des md
-      res.json({ result: true, user, token : user.token});
-      } }else{
-        error.push('email ou mot de passe incorrect')
-        res.json({ result: false , token : user.token});
+          res.json({ result: true, user, token : user.token});
+      }else{
+        res.json(result = "mdp ou mail incorrect")
+      }
+     }else{
+        res.json(result = "mdp ou mail incorrect");
       }
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/update/games',async  function(req,res,next){
+router.put('/games',async  function(req,res,next){
 
 
   var gamelist = req.body.listGameFromFront
@@ -77,11 +82,11 @@ router.put('/update/games',async  function(req,res,next){
   }
   );
 
-  res.json({ result: true});
+  res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/update/mood',async  function(req,res,next){
+router.put('/mood',async  function(req,res,next){
 
 
   var mood = req.body.moodFromFront
@@ -93,12 +98,12 @@ router.put('/update/mood',async  function(req,res,next){
   }
   );
 
-  res.json({ result: true});
+  res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 
-router.put('/update/langues',async  function(req,res,next){
+router.put('/langues',async  function(req,res,next){
 
 
   var langues = req.body.langues
@@ -110,14 +115,14 @@ router.put('/update/langues',async  function(req,res,next){
   }
   );
 
-  res.json({ result: true});
+  res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/update/picture',async  function(req,res,next){
+router.put('/picture',async  function(req,res,next){
 
 
-  var picture = ""
+  var picture = "new"
 
   var update =   await userModel.updateOne(                           // update de la pp
   {  token : req.body.token},  
@@ -126,11 +131,11 @@ router.put('/update/picture',async  function(req,res,next){
   }
   );
 
-  res.json({ result: true});
+  res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/update/description',async  function(req,res,next){
+router.put('/description',async  function(req,res,next){
 
 
   var description = req.body.descriptionFromFront
@@ -142,12 +147,13 @@ router.put('/update/description',async  function(req,res,next){
   }
   );
 
-  res.json({ result: true});
+  res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
-router.put('/update/hide',async  function(req,res,next){
-
+router.put('/hide',async  function(req,res,next){
+if(req.body.token){
   var searchUser = await userModel.findOne({token: req.body.token });
+  
   if(searchUser.visible){
     var update =   await userModel.updateOne(                           // cache l'utilisateur
   {  token : req.body.token},  
@@ -163,11 +169,15 @@ router.put('/update/hide',async  function(req,res,next){
     }
     ); 
   }
-  res.json({ result: true});
+  let user = await userModel.findOne({token: req.body.token });
+  res.json( searchUser );}
+  else{
+    res.json(result = "pb")
+  }
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.delete('/update/delete',async  function(req,res,next){
+router.delete('/delete',async  function(req,res,next){                // supprime l'utilisateur
 
 
   var searchUser = await userModel.findOne({token: req.body.token });
@@ -177,7 +187,7 @@ router.delete('/update/delete',async  function(req,res,next){
   await userModel.deleteOne({ del});
 
   
-  res.json({ result: true});
+  res.json(result =  " deleted");
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
