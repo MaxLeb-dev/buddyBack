@@ -12,8 +12,10 @@ var tags =[]
 
 
 
-/* GET all games. */
-router.get('/games', async function(req, res, next) {
+/* POST all games. */
+router.post('/games', async function(req, res, next) {
+  var gameName = req.body.gameName
+  console.log("gameName",gameName);
   var inputGameName = "Tomb"
   var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d&search=`+inputGameName);
   var library = await rawlibrary.json()
@@ -46,7 +48,7 @@ router.post('/addgames', async function(req, res, next) {
  //Vérification que le jeux n'est pas déjà en DB avec le titre avant de l'ajouter
 
  var existingGame = await gameModel.findOne({ name: "Grand Theft Auto V" })
- console.log(existingGame);
+ console.log("existingGame",existingGame);
     if (!existingGame) {
       var newGame = new gameModel({
         name: library.name,
@@ -73,7 +75,6 @@ router.post('/addgames', async function(req, res, next) {
         await existingGame.save()
       }
     }
- 
  
   res.render("coucou");
 });

@@ -23,4 +23,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/library', libraryRouter);
 
+app.use(express.static(path.join(__dirname, 'reactapp/build')));
+
 module.exports = app;
