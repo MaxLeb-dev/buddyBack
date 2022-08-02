@@ -2,6 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 var userModel = require('../models/users')
+var gameModel = require('../models/games')
+var moodModel = require('../models/mood')
+var langueModdel = require('../models/langues')
+
 
 var bcrypt = require('bcrypt');                                                  // requis pour encodager le mdp
 var uid2 = require('uid2');                                                      // requi pour générer un token unique
@@ -9,12 +13,12 @@ var uid2 = require('uid2');                                                     
 
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.post('/sign-up', async function(req,res,next){
-
+router.post('/sign-up', async function(req,res,next){             //terminé//
+  
 
   var searchUser = await userModel.findOne({mail: req.body.mail})       // verification des doublons par mail
   var searchUser2 = await userModel.findOne({pseudo: req.body.pseudo }); // verification  par pseudo
-
+  
   
   if(searchUser == null & searchUser2 == null){
 
@@ -23,28 +27,29 @@ router.post('/sign-up', async function(req,res,next){
 
     var  Token = uid2(32)
 
-    var gamelist = [];                                                           // AJOUTER LA RECHERCHE DES JEUX ICI POUR L'AJOUTER AU USER
-
-
     var newUser = new userModel({
       pseudo: req.body.pseudo,
       mail: req.body.mail,
       password: hash,
       birthday : req.body.birthday,
-      picture : "",                                                             //// IMAGE PAR DéFAUT ICI
+      picture : "https://res.cloudinary.com/dkfnuq353/image/upload/v1659442405/avatar5_vphxrt.png",                                                             //// IMAGE PAR DéFAUT ICI
       visible :  true ,
-      
-      
-      discord : "",                                                             // ??????
+      description: req.body.description,
+      range  : {min : req.body.min ,  max : req.body.max},
+      discord : req.body.discord,                                                             // ??????
       token : Token,
-      games : gamelist,                                                               // ATTENDRE LES JEUX
-      plateforme : [req.body.plateforme],
-      langue : [req.body.langue],
+      games : [],                                                           
+      plateforme : [],
+      langue : [],
+      like : [],
+      match : [],
+      message: [],
+      mood : []
     })
   
     var newUserSave = await newUser.save();                                     //enregistrement de l'user
   
-    res.json(result = true , user  = newUser);
+    res.json({result : true , user  : newUser});
   } else {
     res.json(result  = false)
   }
@@ -53,7 +58,7 @@ router.post('/sign-up', async function(req,res,next){
 
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.post('/sign-in', async function(req,res,next){
+router.post('/sign-in', async function(req,res,next){             // terminé//
 
     var user = await userModel.findOne({mail: req.body.mail });   // recherche du user par mail
  
@@ -70,72 +75,91 @@ router.post('/sign-in', async function(req,res,next){
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/games',async  function(req,res,next){
+router.put('/games',async  function(req,res,next){                  //terminé//
 
 
-  var gamelist = req.body.listGameFromFront
+  var game1 = req.body.game1
+  var game2 = req.body.game2
+  var game3 = req.body.game3
+
 
   var update =   await userModel.updateOne(                           // update des jeux
   {  token : req.body.token},  
   { 
-  games : gamelist
+  games : [game1 , game2 , game3]
   }
   );
 
-  res.json( result="updated" );
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('games')  
+  
+
+
+  res.json( {result:"updated" ,games :  searchUser.games});
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/mood',async  function(req,res,next){
+router.put('/mood',async  function(req,res,next){                       //terminé//
 
 
-  var mood = req.body.moodFromFront
+  var mood1 = req.body.mood1
+  var mood2 = req.body.mood2
+  var mood3 = req.body.mood3
+  var mood4 = req.body.mood4
+
 
   var update =   await userModel.updateOne(                           // update des moods
   {  token : req.body.token},  
   { 
-  mood : mood
+  mood : [mood1 , mood2 , mood3,mood4]
   }
   );
 
-  res.json( result="updated" );
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('mood')  
+
+  res.json( {result:"updated" ,mood :  searchUser.mood});
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 
-router.put('/langues',async  function(req,res,next){
+router.put('/langues',async  function(req,res,next){                //terminé//
 
 
-  var langues = req.body.langues
+  var langue1 = req.body.langue1
+  var langue2 = req.body.langue2
+  var langue3 = req.body.langue3
+  var langue4 = req.body.langue4
+
 
   var update =   await userModel.updateOne(                           // update des langues
   {  token : req.body.token},  
   { 
-  langue : langues
+  langue : [langue1 , langue2 , langue3,langue4]
   }
   );
 
-  res.json( result="updated" );
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('langue')  
+
+  res.json( {result:"updated" ,langue :  searchUser.langue});
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/picture',async  function(req,res,next){
-
+router.put('/picture',async  function(req,res,next){           //terminé//
+  
 
   var picture = "new"
 
   var update =   await userModel.updateOne(                           // update de la pp
   {  token : req.body.token},  
   { 
-    picture : picture
+    picture : req.body.picture
   }
   );
 
-  res.json( result="updated" );
+  res.json( {result:"updated" });
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.put('/description',async  function(req,res,next){
+router.put('/description',async  function(req,res,next){                  //terminé
 
 
   var description = req.body.descriptionFromFront
@@ -143,14 +167,30 @@ router.put('/description',async  function(req,res,next){
   var update =   await userModel.updateOne(                           // update de la description
   {  token : req.body.token},  
   { 
-    description : description
+    description : req.body.description
   }
   );
 
   res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
-router.put('/hide',async  function(req,res,next){
+
+router.put('/discord',async  function(req,res,next){                  //terminé
+
+
+  var discord = req.body.discord
+
+  var update =   await userModel.updateOne(                           // update de discord
+  {  token : req.body.token},  
+  { 
+    discord : req.body.discord
+  }
+  );
+
+  res.json( result="updated" );
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+router.put('/hide',async  function(req,res,next){                           //terminé//
 if(req.body.token){
   var searchUser = await userModel.findOne({token: req.body.token });
   
@@ -177,7 +217,7 @@ if(req.body.token){
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
-router.delete('/delete',async  function(req,res,next){                // supprime l'utilisateur
+router.delete('/delete',async  function(req,res,next){                // supprime l'utilisateur //terminé//
 
 
   var searchUser = await userModel.findOne({token: req.body.token });
@@ -190,6 +230,26 @@ router.delete('/delete',async  function(req,res,next){                // supprim
   res.json(result =  " deleted");
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
+router.get('/mood',async  function(req,res,next){                // ajout des moods
 
+  var newMood = new moodModel({
+    mood : req.body.mood
+  })
+  var saving = await newMood.save();        
+
+  res.json(result =  " added");
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+router.post('/langue',async  function(req,res,next){                // ajout des langues
+
+
+
+  var newLangue = new langueModdel({
+    langue : req.body.langue
+  })
+  var saving = await newLangue.save();        
+
+  res.json(result =  " added");
+})
 
 module.exports = router;
