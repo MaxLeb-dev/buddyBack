@@ -8,10 +8,6 @@ var platforms= []
 var genres =[]
 var tags =[]
 
-
-
-
-
 /* POST all games. */
 router.post('/games', async function(req, res, next) {
   var gameName = req.body.gameName
