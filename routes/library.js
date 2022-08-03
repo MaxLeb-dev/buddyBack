@@ -23,8 +23,8 @@ router.get('/games', async function(req, res, next) {
       })
   }
 
- console.log("gamesList", library);
-    res.json(games);
+ console.log("gamesList", games);
+    res.json({games});
   });
 
 
