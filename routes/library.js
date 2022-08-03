@@ -16,7 +16,7 @@ var tags =[]
 router.post('/games', async function(req, res, next) {
   var gameName = req.body.gameName
   console.log("gameName",gameName);
-  var inputGameName = "Tomb"
+  var inputGameName = "minecraft"
   var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d&search=`+inputGameName);
   var library = await rawlibrary.json()
   for(var i =0; i< library.results.length; i++){
@@ -24,7 +24,7 @@ router.post('/games', async function(req, res, next) {
   }
 
  console.log("gamesList", games);
-    res.render(games);
+    res.json({games});
   });
 
   /* POST add a newGame. */

@@ -5,6 +5,8 @@ var userModel = require('../models/users')
 var gameModel = require('../models/games')
 var moodModel = require('../models/mood')
 var langueModdel = require('../models/langues')
+var plateformeModel = require('../models/plateforme')
+
 
 
 var bcrypt = require('bcrypt');                                                  // requis pour encodager le mdp
@@ -190,6 +192,28 @@ router.put('/discord',async  function(req,res,next){                  //terminé
   res.json( result="updated" );
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
+router.put('/plateforme',async  function(req,res,next){                //  //
+
+
+  var plateforme1 = req.body.plateforme1
+  var plateforme2 = req.body.plateforme2
+  var plateforme3 = req.body.plateforme3
+  var plateforme4 = req.body.plateforme4
+
+
+  var update =   await userModel.updateOne(                           // update des plateforme
+  {  token : req.body.token},  
+  { 
+  plateforme : [plateforme1 , plateforme2 , plateforme3,plateforme4]
+  }
+  );
+
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme')  
+
+  res.json( {result:"updated" ,plateforme :  searchUser.plateforme});
+})
+
+//---------------------------------------------------------------------------------------------------------------------------------------//
 router.put('/hide',async  function(req,res,next){                           //terminé//
 if(req.body.token){
   var searchUser = await userModel.findOne({token: req.body.token });
@@ -248,6 +272,18 @@ router.post('/langue',async  function(req,res,next){                // ajout des
     langue : req.body.langue
   })
   var saving = await newLangue.save();        
+
+  res.json(result =  " added");
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+router.post('/plateforme',async  function(req,res,next){                // ajout des plateformes
+
+
+
+  var newPlatefrome = new plateformeModel({
+    plateforme : req.body.plateforme
+  })
+  var saving = await newPlatefrome.save();        
 
   res.json(result =  " added");
 })
