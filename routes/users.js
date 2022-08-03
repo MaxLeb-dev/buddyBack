@@ -36,9 +36,9 @@ router.post('/sign-up', async function(req,res,next){             //terminé//
       birthday : req.body.birthday,
       picture : "https://res.cloudinary.com/dkfnuq353/image/upload/v1659442405/avatar5_vphxrt.png",                                                             //// IMAGE PAR DéFAUT ICI
       visible :  true ,
-      description: req.body.description,
+      description: "Bonjour c'est moi M.Larbin",
       range  : {min : req.body.min ,  max : req.body.max},
-      discord : req.body.discord,                                                             // ??????
+      discord : "Const Bg",                                                             // ??????
       token : Token,
       games : [],                                                           
       plateforme : [],
@@ -83,17 +83,18 @@ router.put('/games',async  function(req,res,next){                  //terminé//
   var game1 = req.body.game1
   var game2 = req.body.game2
   var game3 = req.body.game3
+  var game4 = req.body.game4
+  var game5 = req.body.game5
 
-
-  var update =   await userModel.updateOne(                           // update des jeux
+  await userModel.updateOne(                           // update des jeux
   {  token : req.body.token},  
   { 
-  games : [game1 , game2 , game3]
+  games : [game1 , game2 , game3, game4, game5]
   }
   );
 
   var searchUser = await userModel.findOne({token :req.body.token}).populate('games')  
-  
+
 
 
   res.json( {result:"updated" ,games :  searchUser.games});
