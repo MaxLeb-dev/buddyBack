@@ -3,7 +3,7 @@ var router = express.Router();
 var gameModel = require('../models/games')
 var userModel = require('../models/users')
 
-var games = []
+
 var platforms= []
 var genres =[]
 var tags =[]
@@ -14,13 +14,14 @@ var tags =[]
 
 /* POST all games. */
 router.post('/games', async function(req, res, next) {
+  var games = []
   var gameName = req.body.gameName
   console.log("gameName",gameName);
   var inputGameName = "minecraft"
-  var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d&search=`+inputGameName);
+  var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d&search=`+gameName);
   var library = await rawlibrary.json()
   for(var i =0; i< library.results.length; i++){
-    games.push(library.results[i].name)
+    games.push({name : library.results[i].name, img : library.results[i].background_image })
   }
 
  console.log("gamesList", games);
