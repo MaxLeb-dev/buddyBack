@@ -292,9 +292,11 @@ router.post('/plateforme',async  function(req,res,next){                // ajout
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 
-router.post('/game',async  function(req,res,next){                  //terminé//
+router.post('/profil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.findOne({token :req.body.token}).populate('games').populate('plateforme')
-  res.json( {result:"updated" , user : searchUser});
+  res.json( {result:"done" , user : searchUser});
+
+
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
