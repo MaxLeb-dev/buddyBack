@@ -69,10 +69,10 @@ router.post('/sign-in', async function(req,res,next){             // terminé//
         if (bcrypt.compareSync(password, user.password)) {                    // comparaison des md
           res.json({ result: true, user, token : user.token});
       }else{
-        res.json(result = "mdp ou mail incorrect")
+        res.json({result : "mdp ou mail incorrect"})
       }
      }else{
-        res.json(result = "mdp ou mail incorrect");
+        res.json({result : "mdp ou mail incorrect"});
       }
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
@@ -97,7 +97,7 @@ router.put('/games',async  function(req,res,next){                  //terminé//
 
 
 
-  res.json( {result:"updated" ,games :  searchUser.games});
+  res.json( {result:"updated" , user : searchUser});
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
@@ -288,5 +288,14 @@ router.post('/plateforme',async  function(req,res,next){                // ajout
 
   res.json(result =  " added");
 })
+
+//---------------------------------------------------------------------------------------------------------------------------------------//
+
+
+router.post('/game',async  function(req,res,next){                  //terminé//
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('games').populate('plateforme')
+  res.json( {result:"updated" , user : searchUser});
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
 
 module.exports = router;

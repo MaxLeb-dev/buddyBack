@@ -3,14 +3,11 @@ var router = express.Router();
 var gameModel = require('../models/games')
 var userModel = require('../models/users')
 
-
 var platforms= []
 var genres =[]
 var tags =[]
-
-
-
-
+var data =[]
+var games =[]
 
 /* POST all games. */
 router.post('/games', async function(req, res, next) {
@@ -28,6 +25,7 @@ router.post('/games', async function(req, res, next) {
     res.json({games});
   });
 
+
   /* POST add a newGame. */
 router.post('/addgames', async function(req, res, next) {
   const user = await userModel.findOne({
@@ -36,6 +34,7 @@ router.post('/addgames', async function(req, res, next) {
   
   var rawlibrary = await fetch(`https://rawg.io/api/games/grand-theft-auto-v/?key=8bcf0f5081504d7cb5f11906cde4028d`);
   var library = await rawlibrary.json()
+  
  for(var i =0; i< library.platforms.length; i++){
   platforms.push(library.platforms[i].platform.name)
  }
