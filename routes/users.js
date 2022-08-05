@@ -292,8 +292,8 @@ router.post('/plateforme',async  function(req,res,next){                // ajout
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 
-router.post('/profil',async  function(req,res,next){                  //terminé//
-  var searchUser = await userModel.findOne({token :req.body.token}).populate('games').populate('plateforme')
+router.get('/profil',async  function(req,res,next){                  //terminé//
+  var searchUser = await userModel.findOne({token :req.query.token}).populate('games').populate('plateforme')
   res.json( {result:"done" , user : searchUser});
 
 
