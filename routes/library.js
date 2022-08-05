@@ -10,7 +10,7 @@ var data =[]
 var games =[]
 
 /* POST all games. */
-router.post('/games', async function(req, res, next) {
+router.get('/games', async function(req, res, next) {
   var games = []
   var gameName = req.body.gameName
   console.log("gameName",gameName);
