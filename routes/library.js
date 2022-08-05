@@ -10,7 +10,8 @@ var data =[]
 var games =[]
 
 /* POST all games. */
-router.get('/games', async function(req, res, next) {
+router.post('/games', async function(req, res, next) {
+  var games = []
   var gameName = req.body.gameName
   console.log("gameName",gameName);
   var inputGameName = "Tomb"
@@ -40,6 +41,7 @@ router.post('/addgames', async function(req, res, next) {
   
   var rawlibrary = await fetch(`https://rawg.io/api/games/grand-theft-auto-v/?key=8bcf0f5081504d7cb5f11906cde4028d`);
   var library = await rawlibrary.json()
+  
  for(var i =0; i< library.platforms.length; i++){
   platforms.push(library.platforms[i].platform.name)
  }
