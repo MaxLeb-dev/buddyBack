@@ -300,4 +300,26 @@ router.get('/profil',async  function(req,res,next){                  //terminé/
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
+router.get('/getprofil',async  function(req,res,next){                  //terminé//
+  var searchUser = await userModel.findOne({token: "3xFbU9iw24lAVWLVQssErWODNUK2gLWb"}).populate('games').populate('plateforme')
+  
+  res.json( {result:"done" , user : searchUser});
+
+
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+router.put('/message',async  function(req,res,next){                //  //
+
+
+  var conv = req.body.conv
+
+  var update =   await userModel.updateOne(                           // update des plateforme
+  {  token : req.body.token},  
+  { 
+  message  : [conv ]
+  }
+  );
+
+  res.json( {result:"done"});
+})
 module.exports = router;

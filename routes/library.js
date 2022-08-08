@@ -10,19 +10,26 @@ var data =[]
 var games =[]
 
 /* POST all games. */
-router.post('/games', async function(req, res, next) {
+router.get('/games', async function(req, res, next) {
   var games = []
   var gameName = req.body.gameName
   console.log("gameName",gameName);
-  var inputGameName = "minecraft"
-  var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d&search=`+gameName);
+  var inputGameName = "Tomb"
+  if(games.length <100 ){
+  var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d`);
   var library = await rawlibrary.json()
-  for(var i =0; i< library.results.length; i++){
-    games.push({name : library.results[i].name, img : library.results[i].background_image })
-  }
 
+  console.log(library.results.length);
+  for(var i =0; i< library.results.length; i++){
+    console.log(library.results[i].name);
+    games.push(
+      {name: library.results[i].name,
+      img: library.results[i].background_image,
+      })
+  }
+  }
  console.log("gamesList", games);
-    res.json({games});
+    res.json(games);
   });
 
 
