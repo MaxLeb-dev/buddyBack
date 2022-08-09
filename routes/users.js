@@ -78,8 +78,6 @@ router.post('/sign-in', async function(req,res,next){             // terminé//
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 router.put('/games',async  function(req,res,next){                  //terminé//
-
-
   var game1 = req.body.game1
   var game2 = req.body.game2
   var game3 = req.body.game3
