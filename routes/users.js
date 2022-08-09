@@ -300,10 +300,9 @@ router.post('/profil',async  function(req,res,next){                  //terminé
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 router.get('/getprofil',async  function(req,res,next){                  //terminé//
-  var searchUser = await userModel.findOne({token: "3xFbU9iw24lAVWLVQssErWODNUK2gLWb"}).populate('games').populate('plateforme')
-  
+  var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
+  console.log(searchUser.plateforme);
   res.json( {result:"done" , user : searchUser});
-
 
 })
 //-

@@ -93,6 +93,14 @@ router.post('/addgames', async function(req, res, next) {
   res.json("coucou");
 });
 
+ /* GET add a GamesDB. */
+router.post('/getgamesDB',async  function(req,res,next){                  
+  var searchGame = await gameModel.find({_id : req.body._id})
+  console.log(searchGame);
+  res.json( {result:"done" , game : searchGame});
+
+})
+
   module.exports = router;
 
   //? prop API : name, platform (array), rating, ratings_count, added, id, tags, genres, description, metacritic_url, image
