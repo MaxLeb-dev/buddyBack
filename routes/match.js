@@ -22,12 +22,9 @@ router.put('/like',async  function(req,res,next){                //terminé//
 
     var update =   await userModel.updateOne(                           // update des langues
     { token : req.body.token},  
-    { 
-    like :  searchLike._id
-    }
+    { $push: { like: searchLike._id } }
     );
-  
-    var searchUser = await userModel.findOne({token :req.body.token}).populate('like')  
+    var searchUser = await userModel.findOne({token :req.body.token}).populate('like') 
   
     res.json( {result:"updated" ,langue :  searchUser.like});
   })
