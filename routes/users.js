@@ -318,7 +318,7 @@ console.log(searchUser);
   res.json( {result:"done"});
 })
 //
-router.post('/getmyprofil',async  function(req,res,next){                  //terminé//
+router.put('/getmyprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.findOne({token :req.body.token})
   res.json( {result:"done" , user : searchUser});
 }) 
