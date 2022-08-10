@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var libraryRouter = require ('./routes/library')
+var messageRouter = require('./routes/message');
 var matchRouter = require ('./routes/match')
 
 require('./models/connection')
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/library', libraryRouter);
+app.use('/message', messageRouter);
 app.use('/match', matchRouter);
 
 app.use(express.static(path.join(__dirname, 'reactapp/build')));

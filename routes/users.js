@@ -281,9 +281,8 @@ router.post('/plateforme',async  function(req,res,next){                // ajout
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 
-router.post('/profil',async  function(req,res,next){                  //terminé//
-  var searchUser = await userModel.findOne({token :req.body.token}).populate('games').populate('plateforme')
-  
+router.get('/profil',async  function(req,res,next){                  //terminé//
+  var searchUser = await userModel.findOne({token :req.query.token}).populate('games').populate('plateforme')
   res.json( {result:"done" , user : searchUser});
 
 
@@ -294,6 +293,27 @@ router.get('/getprofil',async  function(req,res,next){                  //termin
   var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
   res.json( {result:"done" , user : searchUser});
 
+})
+//---------------------------------------------------------------------------------------------------------------------------------------//
+router.put('/message',async  function(req,res,next){                //  //
+
+
+  var conv = req.body.conv
+
+  var searchUser = await userModel.findOne({token: req.body.token})
+console.log(searchUser);
+
+
+  var update =   await userModel.updateOne(                           // update des plateforme
+  {  token : req.body.token},  
+  { 
+
+  message  : [...searchUser.message, conv ]
+
+  }
+  );
+
+  res.json( {result:"done"});
 })
 //
 router.put('/getmyprofil',async  function(req,res,next){                  //terminé//
