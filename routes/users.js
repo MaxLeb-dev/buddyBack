@@ -130,8 +130,6 @@ router.put('/langues',async  function(req,res,next){                //terminé//
   var langue4 = req.body.langue4
   var langue5 = req.body.langue5
 
-console.log("langue1",langue1, langue2, langue4, langue5);
-
   var update =   await userModel.updateOne(                           // update des langues
   {  token : req.body.token},  
   { 
@@ -194,21 +192,16 @@ router.put('/discord',async  function(req,res,next){                  //terminé
 //---------------------------------------------------------------------------------------------------------------------------------------//
 router.put('/plateforme',async  function(req,res,next){                //  //
 
-  var plateforme = [req.body.plateforme]
-  var plateforme1 = req.body.plateforme1 
-  var plateforme2 = req.body.plateforme2
-  var plateforme3 = req.body.plateforme3
-  var plateforme4 = req.body.plateforme4
-  var plateforme5 = req.body.plateforme5
-  var plateforme6 = req.body.plateforme6
+  var plateforme = JSON.parse(req.body.plateforme)
+  console.log(plateforme);
 
   var update =   await userModel.updateOne(                           // update des plateforme
   {  token : req.body.token},  
-  { plateforme : [plateforme1, plateforme2, plateforme3, plateforme4, plateforme5, plateforme6]}
+  { plateforme : plateforme}
   );
 
   var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme')  
-
+  console.log(searchUser);
   res.json( {result:"updated" ,plateforme :  searchUser.plateforme}); 
 })
 
