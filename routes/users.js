@@ -199,9 +199,7 @@ router.put('/plateforme',async  function(req,res,next){                //  //
   {  token : req.body.token},  
   { plateforme : plateforme}
   );
-
   var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme')  
-  console.log(searchUser);
   res.json( {result:"updated" ,plateforme :  searchUser.plateforme}); 
 })
 
