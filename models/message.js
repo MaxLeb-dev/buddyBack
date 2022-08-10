@@ -8,10 +8,14 @@ var content = mongoose.Schema({
   
   });
   
+  var user = mongoose.Schema({
+    pseudo : String,
+    picture : String
+  });
 
 const messageSchema = mongoose.Schema({
-    user1: String,
-    user2 : String,
+    user1: user,
+    user2 : user,
     content : [content]
 })
 

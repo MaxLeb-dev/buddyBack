@@ -43,10 +43,12 @@ var date = new Date();
 //---------------------------------------------------------------------------------------------------------------------------------------//
 router.post('/new', async function(req,res,next){             //terminé//
   
+
+ 
  
       var newMessagerie = new messageModel({
-        user1: req.body.user1,
-        user2: req.body.user2,
+        user1: {pseudo : req.body.user1, picture : req.body.picture1},
+        user2:  {pseudo : req.body.user2, picture : req.body.picture2},
         content  :[],
       })
     

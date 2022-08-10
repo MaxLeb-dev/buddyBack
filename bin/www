@@ -21,6 +21,32 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+var io = require('socket.io')(server);
+
+
+
+
+
+io.on("connection", (socket) => {
+
+
+
+  socket.on('connected', function (room) {
+    console.log("new moi");
+    socket.join(room)
+  });
+
+
+
+  
+  socket.on('message', function (room, message, pseudo) {
+    console.log("helloe");
+    io.to("MnMS").emit('messageFromBack', room, message,pseudo);
+  });
+
+});
+
+
 /**
  * Listen on provided port, on all network interfaces.
  */
