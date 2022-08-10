@@ -106,12 +106,12 @@ router.put('/mood',async  function(req,res,next){                       //termin
   var mood2 = req.body.mood2
   var mood3 = req.body.mood3
   var mood4 = req.body.mood4
-
+console.log("mood1",mood1);
 
   var update =   await userModel.updateOne(                           // update des moods
   {  token : req.body.token},  
   { 
-  mood : [mood1 , mood2 , mood3,mood4]
+  mood : [mood1 , mood2 , mood3, mood4]
   }
   );
 
@@ -127,14 +127,15 @@ router.put('/langues',async  function(req,res,next){                //terminé//
 
   var langue1 = req.body.langue1
   var langue2 = req.body.langue2
-  var langue3 = req.body.langue3
   var langue4 = req.body.langue4
+  var langue5 = req.body.langue5
 
+console.log("langue1",langue1, langue2, langue4, langue5);
 
   var update =   await userModel.updateOne(                           // update des langues
   {  token : req.body.token},  
   { 
-  langue : [langue1 , langue2 , langue3,langue4]
+  langue : [langue1 , langue2 , langue4, langue5]
   }
   );
 
@@ -193,23 +194,22 @@ router.put('/discord',async  function(req,res,next){                  //terminé
 //---------------------------------------------------------------------------------------------------------------------------------------//
 router.put('/plateforme',async  function(req,res,next){                //  //
 
-
-  var plateforme1 = req.body.plateforme1
+  var plateforme = [req.body.plateforme]
+  var plateforme1 = req.body.plateforme1 
   var plateforme2 = req.body.plateforme2
   var plateforme3 = req.body.plateforme3
   var plateforme4 = req.body.plateforme4
-
+  var plateforme5 = req.body.plateforme5
+  var plateforme6 = req.body.plateforme6
 
   var update =   await userModel.updateOne(                           // update des plateforme
   {  token : req.body.token},  
-  { 
-  plateforme : [plateforme1 , plateforme2 , plateforme3,plateforme4]
-  }
+  { plateforme : [plateforme1, plateforme2, plateforme3, plateforme4, plateforme5, plateforme6]}
   );
 
   var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme')  
 
-  res.json( {result:"updated" ,plateforme :  searchUser.plateforme});
+  res.json( {result:"updated" ,plateforme :  searchUser.plateforme}); 
 })
 
 //---------------------------------------------------------------------------------------------------------------------------------------//
