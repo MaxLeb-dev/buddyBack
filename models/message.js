@@ -16,6 +16,7 @@ var content = mongoose.Schema({
 const messageSchema = mongoose.Schema({
     user1: user,
     user2 : user,
+    room : String,
     content : [content]
 })
 

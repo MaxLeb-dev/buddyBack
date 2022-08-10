@@ -78,8 +78,6 @@ router.post('/sign-in', async function(req,res,next){             // terminé//
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 router.put('/games',async  function(req,res,next){                  //terminé//
-
-
   var game1 = req.body.game1
   var game2 = req.body.game2
   var game3 = req.body.game3
@@ -108,12 +106,12 @@ router.put('/mood',async  function(req,res,next){                       //termin
   var mood2 = req.body.mood2
   var mood3 = req.body.mood3
   var mood4 = req.body.mood4
-
+console.log("mood1",mood1);
 
   var update =   await userModel.updateOne(                           // update des moods
   {  token : req.body.token},  
   { 
-  mood : [mood1 , mood2 , mood3,mood4]
+  mood : [mood1 , mood2 , mood3, mood4]
   }
   );
 
@@ -129,14 +127,13 @@ router.put('/langues',async  function(req,res,next){                //terminé//
 
   var langue1 = req.body.langue1
   var langue2 = req.body.langue2
-  var langue3 = req.body.langue3
   var langue4 = req.body.langue4
-
+  var langue5 = req.body.langue5
 
   var update =   await userModel.updateOne(                           // update des langues
   {  token : req.body.token},  
   { 
-  langue : [langue1 , langue2 , langue3,langue4]
+  langue : [langue1 , langue2 , langue4, langue5]
   }
   );
 
@@ -195,23 +192,17 @@ router.put('/discord',async  function(req,res,next){                  //terminé
 //---------------------------------------------------------------------------------------------------------------------------------------//
 router.put('/plateforme',async  function(req,res,next){                //  //
 
-
-  var plateforme1 = req.body.plateforme1
-  var plateforme2 = req.body.plateforme2
-  var plateforme3 = req.body.plateforme3
-  var plateforme4 = req.body.plateforme4
-
+  var plateforme = JSON.parse(req.body.plateforme)
+  console.log(plateforme);
 
   var update =   await userModel.updateOne(                           // update des plateforme
   {  token : req.body.token},  
-  { 
-  plateforme : [plateforme1 , plateforme2 , plateforme3,plateforme4]
-  }
+  { plateforme : plateforme}
   );
 
   var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme')  
-
-  res.json( {result:"updated" ,plateforme :  searchUser.plateforme});
+  console.log(searchUser);
+  res.json( {result:"updated" ,plateforme :  searchUser.plateforme}); 
 })
 
 //---------------------------------------------------------------------------------------------------------------------------------------//
@@ -301,10 +292,8 @@ router.get('/profil',async  function(req,res,next){                  //terminé/
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
 router.get('/getprofil',async  function(req,res,next){                  //terminé//
-  var searchUser = await userModel.findOne({token: req.body.token}).populate('games').populate('plateforme')
-  
+  var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
   res.json( {result:"done" , user : searchUser});
-
 
 })
 //---------------------------------------------------------------------------------------------------------------------------------------//
@@ -314,12 +303,13 @@ router.put('/message',async  function(req,res,next){                //  //
   var conv = req.body.conv
 
   var searchUser = await userModel.findOne({token: req.body.token})
-
+console.log(searchUser);
 
 
   var update =   await userModel.updateOne(                           // update des plateforme
   {  token : req.body.token},  
   { 
+
   message  : [...searchUser.message, conv ]
 
   }
@@ -327,4 +317,10 @@ router.put('/message',async  function(req,res,next){                //  //
 
   res.json( {result:"done"});
 })
+//
+router.post('/getmyprofil',async  function(req,res,next){                  //terminé//
+  var searchUser = await userModel.findOne({token :req.body.token})
+  res.json( {result:"done" , user : searchUser});
+}) 
+//-
 module.exports = router;
