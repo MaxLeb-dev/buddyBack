@@ -294,14 +294,12 @@ router.post('/profil',async  function(req,res,next){                  //terminé
 
 router.get('/getprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
-  console.log(searchUser.plateforme);
   res.json( {result:"done" , user : searchUser});
 
 })
 //
 router.post('/getmyprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.findOne({token :req.body.token})
-  console.log(searchUser.plateforme);
   res.json( {result:"done" , user : searchUser});
 }) 
 //-
