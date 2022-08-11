@@ -151,9 +151,8 @@ router.put('/picture',async  function(req,res,next){           //terminé//
   var update =   await userModel.updateOne(                           // update de la pp
   {  token : req.body.token},  
   { 
-    picture : req.body.picture
-  }
-  );
+    picture : "https://.closermag.fr/var/closermag/storage/images/1/3/8/4/1/13841748/le-prince-harry.jpeg?alias=width400&size=x100&format=jpeg"
+});
 
   res.json( {result:"updated" });
 })
@@ -312,7 +311,6 @@ console.log(searchUser);
 
   }
   );
-
   res.json( {result:"done"});
 })
 //
