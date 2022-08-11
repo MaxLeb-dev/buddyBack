@@ -293,6 +293,8 @@ router.get('/profil',async  function(req,res,next){                  //terminé/
 
 router.get('/getprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
+  console.log("🚀 ~ file: users.js ~ line 296 ~ router.get ~ searchUser ICI", searchUser[0].mood)
+  
   res.json( {result:"done" , user : searchUser});
 
 })
