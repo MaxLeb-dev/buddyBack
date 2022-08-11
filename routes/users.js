@@ -290,6 +290,7 @@ router.get('/profil',async  function(req,res,next){                  //terminé/
 
 router.get('/getprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
+
   res.json( {result:"done" , user : searchUser});
 
 })
@@ -316,6 +317,7 @@ console.log(searchUser);
 //
 router.put('/getmyprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.findOne({token :req.body.token})
+
   res.json( {result:"done" , user : searchUser});
 }) 
 //-

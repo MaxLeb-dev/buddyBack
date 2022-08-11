@@ -13,12 +13,14 @@ router.get('/', function(req, res, next) {
 
 
 //---------------------------------------------------------------------------------------------------------------------------------------//
-router.get('/historique',async  function(req,res,next){                  //terminé//   liste message
+router.get('/historique',async  function(req,res,next){
+                    //terminé//   liste message
+                  
     var searchUser = await userModel.findOne({token: req.query.token}).populate('message')
-    
-console.log(searchUser,"ici");
+    if(searchUser){
 
-    res.json( {result:"done" , message : searchUser.message});
+
+    res.json( {result:"done" , message : searchUser.message});}else{res.json( {result:"problème" });}
   })
   //---------------------------------------------------------------------------------------------------------------------------------------//
 router.put('/send',async  function(req,res,next){                // envoi message
@@ -47,18 +49,50 @@ var date = new Date();
 router.post('/new', async function(req,res,next){             //terminé//
   
   var  room = uid2(31)
- 
+
+  var userOne = await userModel.findOne({ _id : req.body.user1})
+  var userTwo = await userModel.findOne({ _id : req.body.user2})
+
+
+
  
       var newMessagerie = new messageModel({
-        user1: {pseudo : req.body.user1, picture : req.body.picture1},
-        user2:  {pseudo : req.body.user2, picture : req.body.picture2},
+        user1: {pseudo : userOne.pseudo, picture : userOne.picture},
+        user2:  {pseudo : userTwo.pseudo, picture : userTwo.picture},
         room : room,
         content  :[],
       })
     
-      var newHistorique = await newMessagerie.save();                                    
+      var newHistorique = await newMessagerie.save();   
+                                    
     
-      res.json({result :"created"});
+
+      var conv = newHistorique._id
+
+      
+
+      var update1 =   await userModel.updateOne(                           // update des plateforme
+      {  _id : req.body.user1},  
+      { 
+    
+      message  : [...userOne.message, conv ]
+    
+      }
+      );
+
+
+      var update2 =   await userModel.updateOne(                           // update des plateforme
+      {  _id : req.body.user2},  
+      { 
+    
+      message  : [...userTwo.message, conv ]
+    
+      }
+      );
+    
+
+
+      res.json({result :"created",id : newHistorique._id});
 
   })
   
