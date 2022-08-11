@@ -317,8 +317,10 @@ console.log(searchUser);
   res.json( {result:"done"});
 })
 //
+
+
 router.put('/getmyprofil',async  function(req,res,next){                  //terminé//
-  var searchUser = await userModel.findOne({token :req.body.token})
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme').populate('mood').populate('games')
 
   res.json( {result:"done" , user : searchUser});
 }) 
