@@ -151,9 +151,8 @@ router.put('/picture',async  function(req,res,next){           //terminé//
   var update =   await userModel.updateOne(                           // update de la pp
   {  token : req.body.token},  
   { 
-    picture : req.body.picture
-  }
-  );
+    picture : "https://.closermag.fr/var/closermag/storage/images/1/3/8/4/1/13841748/le-prince-harry.jpeg?alias=width400&size=x100&format=jpeg"
+});
 
   res.json( {result:"updated" });
 })
@@ -199,9 +198,7 @@ router.put('/plateforme',async  function(req,res,next){                //  //
   {  token : req.body.token},  
   { plateforme : plateforme}
   );
-
   var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme')  
-  console.log(searchUser);
   res.json( {result:"updated" ,plateforme :  searchUser.plateforme}); 
 })
 
@@ -293,8 +290,6 @@ router.get('/profil',async  function(req,res,next){                  //terminé/
 
 router.get('/getprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.find().populate("games").populate('mood').populate('plateforme')
-  console.log("🚀 ~ file: users.js ~ line 296 ~ router.get ~ searchUser ICI", searchUser[0].mood)
-  
   res.json( {result:"done" , user : searchUser});
 
 })
@@ -316,12 +311,12 @@ console.log(searchUser);
 
   }
   );
-
   res.json( {result:"done"});
 })
 //
 router.put('/getmyprofil',async  function(req,res,next){                  //terminé//
   var searchUser = await userModel.findOne({token :req.body.token})
+
   res.json( {result:"done" , user : searchUser});
 }) 
 //-

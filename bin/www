@@ -43,7 +43,7 @@ io.on("connection", (socket) => {
      var date = new Date();
     console.log(room,message,pseudo,date);
    
-    io.to(room).emit('messageFromBack', message,pseudo,date);
+    io.to(room).emit('messageFromBack', message,pseudo,date,room);
   });
 
 });
