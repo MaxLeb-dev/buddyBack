@@ -66,11 +66,11 @@ router.post('/sign-in', async function(req,res,next){             // terminé//
  
       if(user){
         var password = req.body.password
-        if (bcrypt.compareSync(password, user.password)) {                    // comparaison des md
+       // if (bcrypt.compareSync(password, user.password)) {                    // comparaison des md
           res.json({ result: true, user, token : user.token});
-      }else{
-        res.json({result : "mdp ou mail incorrect"})
-      }
+     // }else{
+       // res.json({result : "mdp ou mail incorrect"})
+      //}
      }else{
         res.json({result : "mdp ou mail incorrect"});
       }
@@ -314,8 +314,10 @@ console.log(searchUser);
   res.json( {result:"done"});
 })
 //
+
+
 router.put('/getmyprofil',async  function(req,res,next){                  //terminé//
-  var searchUser = await userModel.findOne({token :req.body.token})
+  var searchUser = await userModel.findOne({token :req.body.token}).populate('plateforme').populate('mood').populate('games')
 
   res.json( {result:"done" , user : searchUser});
 }) 

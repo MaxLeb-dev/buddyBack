@@ -54,7 +54,7 @@ router.post('/new', async function(req,res,next){             //terminé//
   var userTwo = await userModel.findOne({ _id : req.body.user2})
 
 
-
+console.log(userOne,  userTwo);
  
       var newMessagerie = new messageModel({
         user1: {pseudo : userOne.pseudo, picture : userOne.picture},
@@ -105,5 +105,20 @@ router.post('/new', async function(req,res,next){             //terminé//
     res.json( {result:"done" , message : messagerie});
   })
 
+  router.delete('/del', async function(req,res,next){             //terminé//
+  
 
+  
+        var update1 =   await userModel.updateOne(                           // update des plateforme
+        {  _id : req.body.user1},  
+        { 
+      
+        message  : [] 
+
+        }
+        );
+  
+        res.json({result :"deleted"});
+  
+    })
 module.exports = router;

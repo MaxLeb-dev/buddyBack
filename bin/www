@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
 
 
   socket.on('connected', function (room) {
-    console.log(room);
+
     socket.join(room)
   });
 
@@ -41,7 +41,7 @@ io.on("connection", (socket) => {
   
   socket.on('message', function (room, message, pseudo) {
      var date = new Date();
-    console.log(room,message,pseudo,date);
+    
    
     io.to(room).emit('messageFromBack', message,pseudo,date,room);
   });

@@ -17,7 +17,7 @@ router.get('/games', async function(req, res, next) {
   var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d`);
   var library = await rawlibrary.json()
 
-  console.log(library.results.length);
+  
   for(var i =0; i< library.results.length; i++){
     games.push(
       {name: library.results[i].name,
@@ -35,7 +35,7 @@ router.post('/addgames', async function(req, res, next) {
   var gamesfromfront = await req.body.wishgame
   var gamesList = JSON.parse(gamesfromfront)
   var token = await req.body.token
-  console.log("tokenfromfront", token);
+
  
    //Vérification que le jeux n'est pas déjà en DB avec le titre avant de l'ajouter
   var gameName =""
@@ -81,11 +81,11 @@ router.post('/addgames', async function(req, res, next) {
     }
     else {
       gameID.push(existingGame[0]._id)
-      console.log("existingGame", existingGame[0]._id);
+ 
     }
 }
   await userModel.updateOne({ token: token}, {games : gameID})
-  console.log("gameID", gameID);
+
     var rawlibrary = await fetch(`https://rawg.io/api/games/Portal-2/?key=8bcf0f5081504d7cb5f11906cde4028d`);
     var library = await rawlibrary.json()
 
