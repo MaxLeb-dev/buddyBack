@@ -113,9 +113,8 @@ console.log(userOne,  userTwo);
         {  _id : req.body.user1},  
         { 
       
-        message  : [] ,
-          like : [],
-          match : []
+        message  : [] 
+
         }
         );
   

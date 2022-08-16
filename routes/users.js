@@ -66,11 +66,11 @@ router.post('/sign-in', async function(req,res,next){             // terminé//
  
       if(user){
         var password = req.body.password
-        if (bcrypt.compareSync(password, user.password)) {                    // comparaison des md
+       // if (bcrypt.compareSync(password, user.password)) {                    // comparaison des md
           res.json({ result: true, user, token : user.token});
-      }else{
-        res.json({result : "mdp ou mail incorrect"})
-      }
+     // }else{
+       // res.json({result : "mdp ou mail incorrect"})
+      //}
      }else{
         res.json({result : "mdp ou mail incorrect"});
       }
@@ -151,9 +151,8 @@ router.put('/picture',async  function(req,res,next){           //terminé//
   var update =   await userModel.updateOne(                           // update de la pp
   {  token : req.body.token},  
   { 
-    picture : req.body.picture
-  }
-  );
+    picture : "https://.closermag.fr/var/closermag/storage/images/1/3/8/4/1/13841748/le-prince-harry.jpeg?alias=width400&size=x100&format=jpeg"
+});
 
   res.json( {result:"updated" });
 })
@@ -313,7 +312,6 @@ console.log(searchUser);
 
   }
   );
-
   res.json( {result:"done"});
 })
 //
