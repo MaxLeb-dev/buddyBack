@@ -1,17 +1,18 @@
-require('./models/connection')
+require('./models/connection')  // connection à  mongoDB (BDD)
 
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
+// utilisation des fichiers routes pour simplifier les requetes
+var indexRouter = require('./routes/index'); 
 var usersRouter = require('./routes/users');
 var libraryRouter = require ('./routes/library')
 var messageRouter = require('./routes/message');
 var matchRouter = require ('./routes/match')
 
-require('./models/connection')
+
 
 var app = express();
 
@@ -21,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// liste des routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/library', libraryRouter);

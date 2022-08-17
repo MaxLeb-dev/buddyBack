@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
+// schema de la collection des messages
 
-var content = mongoose.Schema({
+var content = mongoose.Schema({  // sous document pour définir le schéma d'un message
     pseudo : String,
     date : Date,
     message : String
   
   });
   
-  var user = mongoose.Schema({
+  var user = mongoose.Schema({ // sous document pour définir le schéma d'un user
     pseudo : String,
     picture : String
   });

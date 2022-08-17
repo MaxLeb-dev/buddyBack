@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose')  // schema de la collection des plateformes
 
 const plateformeSchema = mongoose.Schema({
     plateforme: String

@@ -21,33 +21,21 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
-var io = require('socket.io')(server);
+var io = require('socket.io')(server); // creation du webserver pour la communication en directe
 
-
-
-
-
-io.on("connection", (socket) => {
+io.on("connection", (socket) => {      // fonction déclanchée à la connexion
   socket.removeAllListeners()
 
-
-  socket.on('connected', function (room) {
-
+  socket.on('connected', function (room) {  // connection à la room messagerie pour recevoir les messages envoyés à la room
     socket.join(room)
   });
 
-
-
-  
-  socket.on('message', function (room, message, pseudo) {
+  socket.on('message', function (room, message, pseudo) {  // écoute sur l'action message et renvoie le message à tous les utilisateurs présent dans la room
      var date = new Date();
-    
-   
     io.to(room).emit('messageFromBack', message,pseudo,date,room);
   });
 
 });
-
 
 /**
  * Listen on provided port, on all network interfaces.
