@@ -7,11 +7,8 @@ var moodModel = require('../models/mood')
 var langueModdel = require('../models/langues')
 var plateformeModel = require('../models/plateforme')
 
-
-
 var bcrypt = require('bcrypt');                                                  // requis pour encodager le mdp
 var uid2 = require('uid2');                                                      // requi pour générer un token unique
-
 
 //---------------------------------------------------------------------------------------------------------------------------------------//
 
