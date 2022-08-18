@@ -3,22 +3,14 @@ var router = express.Router();
 var gameModel = require('../models/games')
 var userModel = require('../models/users')
 
-var platforms= []
-var genres =[]
-var tags =[]
-var data =[]
-var games =[]
-
 /* POST all games. */
 router.get('/games', async function(req, res, next) {
   var games = []
-  var gameName = req.body.gameName
   if(games.length <100 ){
-  var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d`);
+  var rawlibrary = await fetch(`https://rawg.io/api/games/?key=8bcf0f5081504d7cb5f11906cde4028d`); // requete pour récupérer tous les jeux disponible sur l'API
   var library = await rawlibrary.json()
 
-  console.log(library.results.length);
-  for(var i =0; i< library.results.length; i++){
+  for(var i =0; i< library.results.length; i++){ // création d'un tableau avec uniquement le nom, le slug (nom complet avec des tirets) et l'image
     games.push(
       {name: library.results[i].name,
       slug:library.results[i].slug,
@@ -26,16 +18,16 @@ router.get('/games', async function(req, res, next) {
       })
   }
   }
-    res.json(games);
+    res.json(games);   // renvoie le tableau
   });
 
   /* POST add a newGame. */
-router.post('/addgames', async function(req, res, next) {
+router.post('/addgames', async function(req, res, next) {   // ajout d'un nouveau jeu à la BDD
   var gameID = []
   var gamesfromfront = await req.body.wishgame
   var gamesList = JSON.parse(gamesfromfront)
   var token = await req.body.token
-  console.log("tokenfromfront", token);
+
  
    //Vérification que le jeux n'est pas déjà en DB avec le titre avant de l'ajouter
   var gameName =""
@@ -49,11 +41,10 @@ router.post('/addgames', async function(req, res, next) {
 
       var rawlibrary = await fetch(`https://rawg.io/api/games/${gameSlug}/?key=8bcf0f5081504d7cb5f11906cde4028d`);
       var library = await rawlibrary.json()
-
       var platforms=[]
       var genres=[]
       var tags=[]
-
+// récuperation et tri des noms, des genres,des platefromes
       for(var i =0; i< library.parent_platforms.length; i++){
         platforms.push(library.parent_platforms[i].platform.name)
        }
@@ -63,7 +54,7 @@ router.post('/addgames', async function(req, res, next) {
        for(var i =0; i< library.tags.length; i++){
         tags.push(library.tags[i].name)
        }
-      var newGame = new gameModel({
+      var newGame = new gameModel({   // création du nouveau jeu
         name: library.name,
         description: library.description,
         image: library.background_image,
@@ -76,29 +67,21 @@ router.post('/addgames', async function(req, res, next) {
         genres: genres,
         tags: tags
       })
-      saveGame = await newGame.save()
+      saveGame = await newGame.save() // sauvegarde en BDD du nouveau jeu
       gameID.push(saveGame._id)
     }
     else {
-      gameID.push(existingGame[0]._id)
-      console.log("existingGame", existingGame[0]._id);
+      gameID.push(existingGame[0]._id) 
     }
 }
-  await userModel.updateOne({ token: token}, {games : gameID})
-  console.log("gameID", gameID);
-    var rawlibrary = await fetch(`https://rawg.io/api/games/Portal-2/?key=8bcf0f5081504d7cb5f11906cde4028d`);
-    var library = await rawlibrary.json()
-
-
-  res.json("coucou");
+  await userModel.updateOne({ token: token}, {games : gameID}) // modification de la collection des jeux de l'utilisateurs avec tous les IDs récupérés
+  res.json("done");
 });
 
- /* GET add a GamesDB. */
+ /* GET add a GamesDB. */  //! Non utilisé
 router.post('/getgamesDB',async  function(req,res,next){                  
   var searchGame = await gameModel.find({_id : req.body._id})
-  console.log(searchGame);
   res.json( {result:"done" , game : searchGame});
-
 })
 
   module.exports = router;

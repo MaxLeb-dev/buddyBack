@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose')   // schema de la collection des moods
 
 const moodSchema = mongoose.Schema({
     mood: String
